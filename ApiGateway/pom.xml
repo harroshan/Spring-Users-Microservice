@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.harroshan.gateway</groupId>
-	<artifactId>apiggateway</artifactId>
+	<artifactId>ApiGateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ApiGateway</name>
 	<description>Demo project for Spring Boot</description>
