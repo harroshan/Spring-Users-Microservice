@@ -6,7 +6,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.harroshan.user.models.CreateUserRequest;
 import com.harroshan.user.models.CreateUserResponse;
+import com.harroshan.user.models.DeleteUser;
 import com.harroshan.user.models.UserDto;
 import com.harroshan.user.service.UserService;
 
@@ -30,7 +33,8 @@ public class UsersController {
 		return "Get Mapping checked";
 	}
 
-	@PostMapping
+	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
 
 		ModelMapper modelMapper = new ModelMapper();
@@ -39,10 +43,16 @@ public class UsersController {
 		UserDto userDto = modelMapper.map(createUserRequest, UserDto.class);
 
 		UserDto createdUser = userService.createUser(userDto);
-		
+
 		CreateUserResponse createUserResponse = modelMapper.map(createdUser, CreateUserResponse.class);
 
 		return new ResponseEntity<>(createUserResponse, HttpStatus.ACCEPTED);
+	}
+
+	@DeleteMapping
+	public UserDto deleteUser(@RequestBody DeleteUser deleteUser) {
+
+		return userService.getUserDetailsByEmail(deleteUser.getEmail());
 	}
 
 }
