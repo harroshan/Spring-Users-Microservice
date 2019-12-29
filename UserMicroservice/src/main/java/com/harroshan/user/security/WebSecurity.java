@@ -27,12 +27,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
+
 		http.authorizeRequests().antMatchers("/**").hasIpAddress(environment.getProperty("gateway.ip")).and()
 				.addFilter(getAuthenticationFilter());
 	}
 
 	private AuthenticationFilter getAuthenticationFilter() throws Exception {
-		AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(), userService, environment);
+		AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(), userService,
+				environment);
 		authenticationFilter.setFilterProcessesUrl(environment.getProperty("login.url.path"));
 		return authenticationFilter;
 	}
